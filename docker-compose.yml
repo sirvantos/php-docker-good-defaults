@@ -3,14 +3,14 @@ version: '3.3'
 services:
     php:
         # note you need to manually build this image from base dockerfile above FIRST!
-        image: yourdockername/base-php-nginx
+        #image: sirvantos/laravel-nginx
         build: .
         volumes:
             # used delegated mode here on docker for mac for faster disk I/O
-            - .:/var/www/app:delegated
+            - .:/var/www:delegated
             - ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
-            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-            - ./nginx/nginx-site.conf:/etc/nginx/conf.d/default.conf
+            - ./nginx.conf:/etc/nginx/nginx.conf
+            - ./nginx-site.conf:/etc/nginx/conf.d/default.conf
               # mount in dev certs if you want to dev over ssl
               #- ./dev-cert.crt:/etc/nginx/ssl/cert.crt
               #- ./dev-key.pem:/etc/nginx/ssl/key.pem

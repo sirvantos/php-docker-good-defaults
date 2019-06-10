@@ -1,4 +1,4 @@
-FROM yourdockername/base-php-nginx:latest
+FROM sirvantos/laravel:0.1
 
 # add bitbucket and github to known hosts for ssh needs
 WORKDIR /root/.ssh
@@ -78,7 +78,7 @@ COPY ./nginx-site.conf /etc/nginx/conf.d/default.conf
 
 
 # copy in app code as late as possible, as it changes the most
-WORKDIR /var/www/app
+WORKDIR /var/www
 COPY --chown=www-data:www-data . .
 RUN composer dump-autoload -o
 
@@ -86,7 +86,7 @@ RUN composer dump-autoload -o
 HEALTHCHECK --interval=5s --timeout=3s \
   CMD curl -f http://localhost/ping || exit 1
 
-WORKDIR /var/www/app/public
+WORKDIR /var/www/public
 EXPOSE 80 443 9000 9001
 
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

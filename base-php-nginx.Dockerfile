@@ -1,7 +1,7 @@
-FROM php:7.2-fpm
+FROM php:7.3-fpm
 
 
-ENV COMPOSER_VERSION=1.6.5 \
+ENV COMPOSER_VERSION=1.7.3 \
     NGINX_VERSION=1.14.0-1~stretch \
     NJS_VERSION=1.14.0.0.2.0-1~stretch \
     NODE_VERSION=8.11.3
@@ -98,9 +98,9 @@ ENV PATH="/composer/vendor/bin:$PATH" \
     COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_VENDOR_DIR=/var/www/vendor \
     COMPOSER_HOME=/composer
-RUN curl -s -f -L -o /tmp/installer.php https://raw.githubusercontent.com/composer/getcomposer.org/da290238de6d63faace0343efbdd5aa9354332c5/web/installer \
+RUN curl -s -f -L -o /tmp/installer.php https://getcomposer.org/installer \
  && php -r " \
-    \$signature = '669656bab3166a7aff8a7506b8cb2d1c292f042046c5a994c43155c0be6190fa0355160742ab2e1c88d40d5be660b410'; \
+    \$signature = '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5'; \
     \$hash = hash('SHA384', file_get_contents('/tmp/installer.php')); \
     if (!hash_equals(\$signature, \$hash)) { \
         unlink('/tmp/installer.php'); \
@@ -110,7 +110,6 @@ RUN curl -s -f -L -o /tmp/installer.php https://raw.githubusercontent.com/compos
  && php /tmp/installer.php --no-ansi --install-dir=/usr/bin --filename=composer --version=${COMPOSER_VERSION} \
  && rm /tmp/installer.php \
  && composer --ansi --version --no-interaction
-
 
 # install node for running gulp at container entrypoint startup in dev
 # copied from official node Dockerfile
