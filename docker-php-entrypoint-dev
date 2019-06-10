@@ -10,13 +10,11 @@ set -e
 # ensure bind mount permissions are what we need
 chown -R :www-data /var/www/storage/ \
 	/var/www/bootstrap/cache/ \
-	/var/www/public/ \
-	/var/www/build/
+	/var/www/public/
 
 chmod -R g+w /var/www/storage/ \
 	/var/www/bootstrap/cache/ \
-	/var/www/public/ \
-	/var/www/build/
+	/var/www/public/
   
 # run last minute build tools just for local dev
 cd /var/www
