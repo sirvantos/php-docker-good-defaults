@@ -11,11 +11,11 @@ RUN chmod 0600 /root/.ssh \
 ##
 
 # install composer dependencies
-WORKDIR /var/www/app
+WORKDIR /var/www
 COPY ./composer.json ./composer.lock* ./
 ENV COMPOSER_VENDOR_DIR=/var/www/vendor
 # RUN composer config github-oauth.github.com YOUROAUTHKEYHERE
-RUN composer install --no-scripts --no-autoloader --ansi --no-interaction
+# RUN composer install --no-scripts --no-autoloader --ansi --no-interaction
 
 ##
 ## Node Build Tools
@@ -26,10 +26,12 @@ ENV NODE_ENV=develop
 # install dependencies first, in a different location for easier app bind mounting for local development
 WORKDIR /var/www
 COPY ./package.json .
-RUN npm install
-# no need to cache clean in non-final build steps
-ENV PATH /var/www/node_modules/.bin:$PATH
-ENV NODE_PATH=/var/www/node_modules
+
+#RUN npm install
+## no need to cache clean in non-final build steps
+#ENV PATH /var/www/node_modules/.bin:$PATH
+#ENV NODE_PATH=/var/www/node_modules
+
 WORKDIR /var/www/app
 
 ##
@@ -80,7 +82,6 @@ COPY ./nginx-site.conf /etc/nginx/conf.d/default.conf
 # copy in app code as late as possible, as it changes the most
 WORKDIR /var/www
 COPY --chown=www-data:www-data . .
-RUN composer dump-autoload -o
 
 # be sure nginx is properly passing to php-fpm and fpm is responding
 HEALTHCHECK --interval=5s --timeout=3s \

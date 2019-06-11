@@ -18,7 +18,10 @@ chmod -R g+w /var/www/storage/ \
   
 # run last minute build tools just for local dev
 cd /var/www
+
+composer install --no-scripts --no-autoloader --ansi --no-interaction
 composer dump-autoload
+
 cd /var/www/public
 
 
